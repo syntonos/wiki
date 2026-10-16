@@ -32,7 +32,14 @@ Drag the edge of either side panel to resize it. Drag it narrower than `SNAP` an
 - Fonts (Orbitron for titles, JetBrains Mono for body text) are loaded in `index.html` and set in `src/styles.css`.
 - The favicon is `public/favicon.svg` (and a PNG copy). The social preview image is `public/og.png`.
 
-## Deploy
-`npm run build` makes a static `dist/` folder that works on any static host. For GitHub Pages: push to `main`, set Pages source to "GitHub Actions" (the workflow is already in `.github/workflows/deploy.yml`). After deploying, change `og:image` in `index.html` to an absolute URL.
+## Deploy to GitHub Pages
+The project already contains everything needed: a relative-path build, hash routing (no server rules), a `.gitignore` and the workflow `.github/workflows/deploy.yml`.
+1. Create a GitHub repository and push the project to the `main` branch.
+2. In the repository open Settings, then Pages, and set **Source** to **GitHub Actions**.
+3. Push again (or run the workflow from the Actions tab). The site appears at `https://USER.github.io/REPO/`.
+4. Every later push to `main` rebuilds and redeploys automatically, so adding a note is: add the file, commit, push.
+5. After the first deploy, change `og:image` in `index.html` to the absolute URL of `og.png` so link previews work.
+
+Any other static host works too: run `npm run build` and upload the `dist/` folder.
 
 Back to [[Welcome]].

@@ -5,8 +5,8 @@ import Graph from './components/Graph.jsx'
 import Switcher from './components/Switcher.jsx'
 import { init, names, out, backlinks, resolveNote, title, home, indexMd, allTags, tagIndex } from './lib/vault.js'
 
-const OWNER_NAME = 'MINA YEH'          // <- placeholder: put a name here
-const SITE_URL = 'https://minayeh.com'  // <- where the star + name link to
+const OWNER_NAME = 'YOUR NAME'          // <- placeholder: put a name here
+const SITE_URL = 'https://example.com'  // <- where the star + name link to
 const GITHUB_URL = 'https://github.com/'          // <- your GitHub
 const INSTAGRAM_URL = 'https://instagram.com/'     // <- your Instagram
 const SNAP = 130, MIN = 200, MAX = 520  // drag a panel below SNAP px and it snaps closed
@@ -86,12 +86,13 @@ export default function App() {
     if (view !== 'note') return
     const hs = [...document.querySelectorAll('.note h1, .note h2, .note h3')]
     const seen = {}
+    const clean = (h) => { const c = h.cloneNode(true); c.querySelectorAll('.katex-mathml').forEach((e) => e.remove()); return (c.textContent || '').trim() }
     hs.forEach((h) => { // ids are readable names (e.g. #flow-diagram), not numbers
-      const b = (h.textContent || '').toLowerCase().trim().replace(/[^\p{L}\p{N}]+/g, '-').replace(/^-|-$/g, '') || 'section'
+      const b = clean(h).toLowerCase().trim().replace(/[^\p{L}\p{N}]+/g, '-').replace(/^-|-$/g, '') || 'section'
       seen[b] = (seen[b] || 0) + 1
       h.id = seen[b] > 1 ? `${b}-${seen[b]}` : b
     })
-    setToc(hs.map((h) => ({ id: h.id, l: +h.tagName[1], t: h.textContent })))
+    setToc(hs.map((h) => ({ id: h.id, l: +h.tagName[1], t: clean(h) })))
   }, [page, view])
 
   const drawer = () => Math.round(Math.min(320, innerWidth * 0.88))

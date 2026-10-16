@@ -130,3 +130,5 @@ main{position:relative;display:flex;flex-direction:column;min-width:0;min-height
 
 .lstar{display:flex;flex:none;margin-left:2px;filter:drop-shadow(0 0 6px var(--acc))}
 .ntitle{padding-left:0}
+
+@media(max-width:760px){.bar>a.tab{display:none}}

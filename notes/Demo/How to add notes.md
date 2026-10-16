@@ -61,7 +61,7 @@ Write `#tag` anywhere (not inside code). Tags are clickable, indexed on the home
 `![[Other Note]]` pulls that note's content inline. `![[photo.png]]` embeds media as before.
 
 ## Math
-Inline `$E = mc^2$` and block math between `$$` lines (KaTeX). Write `\$` for a literal dollar sign.
+Inline `$E = mc^2$` and block math between `$$` lines (KaTeX). A `$$` block may also start mid-line or be written on one line (`$$x^2$$`). Write `\$` for a literal dollar sign (otherwise `$5 and $10` is read as math). Inside math, write a literal hash as `\#`.
 
 ## Quizzes: extras
 Fill-in-the-blank uses `A:` with accepted answers separated by `|`. Add `Shuffle: yes` to randomize option order.

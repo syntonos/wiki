@@ -31,7 +31,8 @@ const WIKI = /(?<!!)\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|([^\]]+))?\]\]/g
 const EMBED = /!\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|[^\]]+)?\]\]/g
 const TAG = /(^|[\s(])#([A-Za-z][\w/-]*)/gm
 const CODE = /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`)/g
-const plain = (md) => md.replace(CODE, ' ')
+const MATH = /(\$\$[\s\S]*?\$\$|(?<![\\$])\$[^$\n]+?\$)/g
+const plain = (md) => md.replace(CODE, ' ').replace(MATH, ' ')
 
 
 // Build the vault. showDemo=false hides every note in notes/Demo (set in src/App.jsx).
@@ -60,10 +61,23 @@ export const backlinks = (p) => names.filter((n) => out[n].has(p))
 const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))
 const CALLOUT = /^> \[!(\w+)\][+-]?[ \t]*(.*)\n((?:>.*\n?)*)/gm
 
-// Obsidian syntax -> markdown/HTML. Code is left untouched.
-export function preprocess(md, depth = 0) {
-  return md.split(CODE).map((s, i) => i % 2 ? s : s
-    .replace(CALLOUT, (_, t, ti, body) => `<div class="callout c-${t.toLowerCase()}">\n<div class="ct">${esc(ti || t)}</div>\n\n${body.replace(/^> ?/gm, '')}\n</div>\n\n`)
+// A multi-line $$ block that does not start/end on its own line (e.g. "Text: $$" then the formula)
+// would swallow the rest of the note, so give it its own lines. Well-formed blocks are left alone.
+const fixMath = (s) => s.replace(
+  // 1st alternative: single-line $$..$$ (skipped, so pairs stay aligned); 2nd: multi-line $$..$$
+  /\$\$(?:[^$\\\n]|\\[^\n])*\$\$|\$\$((?:[^$\\]|\\[\s\S])*?\n(?:[^$\\]|\\[\s\S])*?)\$\$/g,
+  (m, body, off, str) => {
+    if (body === undefined) return m
+    const ls = str.lastIndexOf('\n', off - 1) + 1
+    const le = str.indexOf('\n', off + m.length)
+    const after = str.slice(off + m.length, le < 0 ? str.length : le)
+    if (!str.slice(ls, off).trim() && !after.trim()) return m
+    return `\n\n$$\n${body.trim()}\n$$\n\n`
+  })
+
+// tags, wikilinks, embeds (never applied inside code or math)
+function rich(s, depth) {
+  return s
     .replace(TAG, (_, pre, t) => `${pre}[#${t}](<#/tag/${encodeURI(t.toLowerCase())}>)`)
     .replace(WIKI, (_, n, a) => {
       const r = resolveNote(n)
@@ -77,7 +91,15 @@ export function preprocess(md, depth = 0) {
           : `\n\n<div class="embed"><a class="wl embed-title" href="#/${encodeURI(r)}">${esc(title(r))}</a>\n\n${preprocess(notes[r].replace(/^#\s+.+\n?/, ''), depth + 1)}\n\n</div>\n\n`
       }
       return `![${w ? '|' + w : ''}](<${n}>)`
-    })).join('')
+    })
+}
+
+// Obsidian syntax -> markdown/HTML. Code and math are left untouched.
+export function preprocess(md, depth = 0) {
+  return md.split(CODE).map((s, i) => i % 2 ? s :
+    fixMath(s.replace(CALLOUT, (_, t, ti, body) => `<div class="callout c-${t.toLowerCase()}">\n<div class="ct">${esc(ti || t)}</div>\n\n${body.replace(/^> ?/gm, '')}\n</div>\n\n`))
+      .split(MATH).map((m, j) => j % 2 ? m : rich(m, depth)).join('')
+  ).join('')
 }
 
 // Generated sections appended to the homepage: index, tags, unresolved links.
