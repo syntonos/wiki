@@ -17,6 +17,9 @@ jobs:
           pkg=$(find . -name package.json -not -path '*/node_modules/*' | awk '{print length, $0}' | sort -n | head -1 | cut -d' ' -f2-)
           echo "Using $pkg"
           echo "dir=$(dirname "$pkg")" >> "$GITHUB_OUTPUT"
+      - name: Remove any committed node_modules / dist (a stale copy breaks the build)
+        working-directory: ${{ steps.loc.outputs.dir }}
+        run: rm -rf node_modules dist
       - name: Install
         working-directory: ${{ steps.loc.outputs.dir }}
         run: npm install --no-audit --no-fund
