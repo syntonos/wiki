@@ -132,3 +132,14 @@ main{position:relative;display:flex;flex-direction:column;min-width:0;min-height
 .ntitle{padding-left:0}
 
 @media(max-width:760px){.bar>a.tab{display:none}}
+
+/* quiz: answers after check + per-quiz reset */
+.quiz .qbtns{display:flex;gap:8px}
+.quiz button.alt{background:none;color:var(--cy);border:1px solid var(--cy)}
+.quiz label.locked{cursor:default}.quiz label.locked:hover{background:none}
+.quiz .mark{margin-left:auto;padding-left:10px}
+.quiz .ans{margin:4px 0;color:#fff}
+.quiz .res{margin-top:12px}
+
+.math-block{display:block;margin:1em 0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}.math-block::-webkit-scrollbar{display:none}
+.math-block .katex-display{margin:0}

@@ -1,14 +1,13 @@
 import { useMemo, useState } from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import remarkMath from 'remark-math'
 import rehypeRaw from 'rehype-raw'
-import rehypeKatex from 'rehype-katex'
 import rehypeHighlight from 'rehype-highlight'
 import 'highlight.js/styles/tokyo-night-dark.css'
 import 'katex/dist/katex.min.css'
 import Quiz, { QuizCtx } from './Quiz.jsx'
 import Mermaid from './Mermaid.jsx'
+import MathSpan from './MathSpan.jsx'
 import { names, notes, title, preprocess, resolveAsset } from '../lib/vault.js'
 
 const isVideo = (u) => /\.(mp4|webm|ogv|mov|m4v)(\?|#|$)/i.test(u)
@@ -33,11 +32,12 @@ export default function Note({ id, text: src }) {
   const total = useMemo(() => (md.match(/^```quiz/gm) || []).length, [md])
   const [res, setRes] = useState({})
   const [reset, setReset] = useState(0)
-  const ctx = useMemo(() => ({ reset, report: (k, ok) => setRes((r) => ({ ...r, [k]: ok })) }), [reset])
+  const ctx = useMemo(() => ({ reset, report: (k, ok) => setRes((r) => { const n = { ...r }; if (ok === undefined) delete n[k]; else n[k] = ok; return n }) }), [reset])
   const score = Object.values(res).filter(Boolean).length
   const i = id ? names.indexOf(id) : -1
 
-  const components = {
+  // memoized: a new component identity on every render would remount (and reset) every quiz/diagram
+  const components = useMemo(() => ({
     a: ({ href = '', className, children }) =>
       href === '#missing' ? <span className="dead">{children}</span>
       : href.startsWith('#/tag/') ? <a className="tag" href={href}>{children}</a>
@@ -53,11 +53,12 @@ export default function Note({ id, text: src }) {
       return <img src={u} alt={alt.replace(/\|\d+$/, '')} style={style} />
     },
     pre: CodeBlock,
+    'math-tex': ({ node }) => <MathSpan tex={node.properties.dataT ?? ''} display={String(node.properties.dataD) === '1'} />,
     code: ({ className = '', children }) =>
       /language-quiz/.test(className) ? <Quiz src={String(children)} />
       : /language-mermaid/.test(className) ? <Mermaid src={String(children)} />
       : <code className={className}>{children}</code>,
-  }
+  }), [id])
   return (
     <article className="note">
       {total > 0 && (
@@ -65,7 +66,7 @@ export default function Note({ id, text: src }) {
           <button onClick={() => { setRes({}); setReset((r) => r + 1) }}>Reset</button></div>
       )}
       <QuizCtx.Provider value={ctx}>
-        <Markdown remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeRaw, rehypeKatex, [rehypeHighlight, { ignoreMissing: true }]]} components={components}>
+        <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw, [rehypeHighlight, { ignoreMissing: true }]]} components={components}>
           {md}
         </Markdown>
       </QuizCtx.Provider>

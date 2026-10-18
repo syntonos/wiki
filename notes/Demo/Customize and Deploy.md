@@ -40,6 +40,8 @@ The project already contains everything needed: a relative-path build, hash rout
 4. Every later push to `main` rebuilds and redeploys automatically, so adding a note is: add the file, commit, push.
 5. After the first deploy, change `og:image` in `index.html` to the absolute URL of `og.png` so link previews work.
 
+If a run fails, open the Actions tab, click the failed run, click the **build** job and expand the step with the red cross: the message there says what went wrong. The workflow finds `package.json` automatically (even if the project is inside a sub-folder) and runs `npm install` then `npm run build` on Node 22.
+
 Any other static host works too: run `npm run build` and upload the `dist/` folder.
 
 Back to [[Welcome]].

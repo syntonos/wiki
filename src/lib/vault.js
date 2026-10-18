@@ -1,3 +1,5 @@
+import { MATH, mathTag } from './math.js'
+
 // Loads every .md file and media file under /notes at build/dev time.
 const rawNotes = import.meta.glob('/notes/**/*.md', { query: '?raw', import: 'default', eager: true })
 const rawAssets = import.meta.glob('/notes/**/*.{png,jpg,jpeg,gif,webp,svg,mp4,webm,mov}', { query: '?url', import: 'default', eager: true })
@@ -31,7 +33,6 @@ const WIKI = /(?<!!)\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|([^\]]+))?\]\]/g
 const EMBED = /!\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|[^\]]+)?\]\]/g
 const TAG = /(^|[\s(])#([A-Za-z][\w/-]*)/gm
 const CODE = /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]*`)/g
-const MATH = /(\$\$[\s\S]*?\$\$|(?<![\\$])\$[^$\n]+?\$)/g
 const plain = (md) => md.replace(CODE, ' ').replace(MATH, ' ')
 
 
@@ -71,7 +72,7 @@ const fixMath = (s) => s.replace(
     const ls = str.lastIndexOf('\n', off - 1) + 1
     const le = str.indexOf('\n', off + m.length)
     const after = str.slice(off + m.length, le < 0 ? str.length : le)
-    if (!str.slice(ls, off).trim() && !after.trim()) return m
+    if (/^[\s>]*$/.test(str.slice(ls, off)) && !after.trim()) return m // own line (a blockquote "> " prefix is fine)
     return `\n\n$$\n${body.trim()}\n$$\n\n`
   })
 
@@ -98,7 +99,7 @@ function rich(s, depth) {
 export function preprocess(md, depth = 0) {
   return md.split(CODE).map((s, i) => i % 2 ? s :
     fixMath(s.replace(CALLOUT, (_, t, ti, body) => `<div class="callout c-${t.toLowerCase()}">\n<div class="ct">${esc(ti || t)}</div>\n\n${body.replace(/^> ?/gm, '')}\n</div>\n\n`))
-      .split(MATH).map((m, j) => j % 2 ? m : rich(m, depth)).join('')
+      .split(MATH).map((m, j) => j % 2 ? mathTag(m) : rich(m, depth)).join('')
   ).join('')
 }
 

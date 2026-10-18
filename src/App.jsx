@@ -5,8 +5,8 @@ import Graph from './components/Graph.jsx'
 import Switcher from './components/Switcher.jsx'
 import { init, names, out, backlinks, resolveNote, title, home, indexMd, allTags, tagIndex } from './lib/vault.js'
 
-const OWNER_NAME = 'YOUR NAME'          // <- placeholder: put a name here
-const SITE_URL = 'https://example.com'  // <- where the star + name link to
+const OWNER_NAME = 'MINA YEH'          // <- placeholder: put a name here
+const SITE_URL = 'https://minayeh.com'  // <- where the star + name link to
 const GITHUB_URL = 'https://github.com/'          // <- your GitHub
 const INSTAGRAM_URL = 'https://instagram.com/'     // <- your Instagram
 const SNAP = 130, MIN = 200, MAX = 520  // drag a panel below SNAP px and it snaps closed

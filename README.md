@@ -28,6 +28,7 @@ Wikilinks, backlinks, graph (zoom/pan, folder colours, tag filter), tags, callou
 2. Settings > Pages > Source: **GitHub Actions**.
 3. The included workflow (`.github/workflows/deploy.yml`) builds and deploys on every push to `main`; the site is served at `https://USER.github.io/REPO/`.
 4. Set `og:image` in `index.html` to an absolute URL after the first deploy.
+5. If a run fails: Actions tab > failed run > **build** > expand the red step to read the error.
 
 Works on any static host too: `npm run build`, then upload `dist/`.
 

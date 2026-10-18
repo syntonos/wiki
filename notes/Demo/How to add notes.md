@@ -72,7 +72,7 @@ A: oxygen | O
 ? H2O
 ```
 ~~~
-Every note with quizzes shows a running score with a reset button.
+Math (`$...$`) works in questions, options and explanations. After you press Check the correct answer is shown, the quiz locks, and a Reset button lets you try again (shuffled quizzes reshuffle). Every note with quizzes also shows a running score with a reset-all button.
 
 ## Navigation
 - **Ctrl/Cmd+K** (or `/`, or the magnifier button) opens the quick switcher.

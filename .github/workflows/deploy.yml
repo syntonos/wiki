@@ -1,6 +1,6 @@
 name: Deploy to GitHub Pages
 on:
-  push: { branches: [main] }
+  push: { branches: [main, master] }
   workflow_dispatch:
 permissions: { contents: read, pages: write, id-token: write }
 concurrency: { group: pages, cancel-in-progress: true }
@@ -10,11 +10,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 20, cache: npm }
-      - run: npm ci
-      - run: npm run build
+        with: { node-version: 22 }
+      - name: Find the project folder (works even if it sits in a sub-folder)
+        id: loc
+        run: |
+          pkg=$(find . -name package.json -not -path '*/node_modules/*' | awk '{print length, $0}' | sort -n | head -1 | cut -d' ' -f2-)
+          echo "Using $pkg"
+          echo "dir=$(dirname "$pkg")" >> "$GITHUB_OUTPUT"
+      - name: Install
+        working-directory: ${{ steps.loc.outputs.dir }}
+        run: npm install --no-audit --no-fund
+      - name: Build
+        working-directory: ${{ steps.loc.outputs.dir }}
+        run: npm run build
       - uses: actions/upload-pages-artifact@v3
-        with: { path: dist }
+        with: { path: "${{ steps.loc.outputs.dir }}/dist" }
   deploy:
     needs: build
     runs-on: ubuntu-latest
