@@ -5,14 +5,14 @@ import Graph from './components/Graph.jsx'
 import Switcher from './components/Switcher.jsx'
 import { init, names, out, backlinks, resolveNote, title, home, indexMd, allTags, tagIndex } from './lib/vault.js'
 
-const OWNER_NAME = 'MINA YEH'          // <- placeholder: put a name here
-const SITE_URL = 'https://minayeh.com'  // <- where the star + name link to
+const OWNER_NAME = 'YOUR NAME'          // <- placeholder: put a name here
+const SITE_URL = 'https://example.com'  // <- where the star + name link to
 const GITHUB_URL = 'https://github.com/'          // <- your GitHub
 const INSTAGRAM_URL = 'https://instagram.com/'     // <- your Instagram
 const SNAP = 130, MIN = 200, MAX = 520  // drag a panel below SNAP px and it snaps closed
 // Show the bundled notes/Demo folder (usage instructions + feature demos)? false = hide it everywhere
 // (sidebar, graph, search, tags, index). Code-only switch.
-const SHOW_DEMO = false
+const SHOW_DEMO = true
 init({ showDemo: SHOW_DEMO })
 
 const Svg = ({ children }) => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">{children}</svg>

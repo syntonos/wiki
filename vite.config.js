@@ -6,10 +6,6 @@ export default defineConfig({
   base: './',
   plugins: [react()],
   build: {
-    chunkSizeWarningLimit: 1600, // mermaid is big but lazy-loaded (only fetched when a note has a diagram)
-    rollupOptions: { output: { manualChunks: {
-      react: ['react', 'react-dom'],
-      markdown: ['react-markdown', 'remark-gfm', 'rehype-raw', 'rehype-highlight', 'katex'],
-    } } },
+    chunkSizeWarningLimit: 2000, // mermaid is big but lazy-loaded (only fetched when a note has a diagram)
   },
 })
