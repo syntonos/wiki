@@ -1,4 +1,4 @@
-# Exoskeleton PDB
+# Exoskeleton Power
 ## V1
 ### Specs
 This has to power a few parts, each with different current draw and different voltages. 
@@ -10,12 +10,23 @@ This has to power a few parts, each with different current draw and different vo
     - No Load Current: 0.5 Arms
     - Rated Load Phase Current: 7 Apk
     - Peak Phase Current: 23 Apk
-![Robstride 01 Specs](/images/projects/Exoskeleton/robstride01.png)
+
+![Robstride 01 Specs](/public/images/projects/Exoskeleton/robstride01.png)
 
 ### Battery
 We will be using a battery pack of 21700 cells, with integrated BMS and USB-C PD charging. Outputs use XT30 to the PDB.
 
 The [EVE 50PL 21700 5000mAh 50A Tabless Battery](https://imrbatteries.com/products/eve-50pl-21700-5000-mah-125a-battery?_pos=2&_sid=788b713ca&_ss=r) suits our purpose perfectly, with a 5000mAh capacity and tabless technology giving discharge rates of 50A, enough for if both motors spike to absolute peak current (50A > 23A + 23A). 
+
+We're picking a 4S battery pack for 14.4V, which is a good midpoint for both boosting to 36V and bucking down to 5V and 3V3. There are also commercial products that use 14.4V battery packs, so this is a tested configuration.
+
+There are needs to be a inbuilt BMS to manage a consistent voltage and charge across 4S; quite a few problems (not as bad as parallel disjoint voltages but preferably avoidable) if this isn't properly managed. Possibly adding bluetooth integration to track total charge (track outputs and input and keep a gauge) on an application.
+
+Input: 
+- USB-C Charging (15V PD Negotiation)
+
+Output: 
+- XT30 to the PDB
 
 ### PDB
 Inputs: 

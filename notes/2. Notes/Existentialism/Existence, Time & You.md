@@ -1,4 +1,5 @@
 # Existence, Time & You 
+(In-class essay, transcribed.)
 	
 Across these stories, there exist two interpretations of time: time as the inevitable, the dread-inducing linear march from birth to non-existence, and time as a loop, the repetitive, cyclical images that chain existence to structure. By forcing these characters to contend with these temporal patterns, Sartre, Camus, and Hemingway flatten life and death to a single plane, compelling them to look into the “nothingness” at the heart of both. 
 
