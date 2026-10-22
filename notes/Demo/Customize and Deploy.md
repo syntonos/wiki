@@ -1,3 +1,6 @@
+---
+order: 3
+---
 # Customize and Deploy
 
 #demo

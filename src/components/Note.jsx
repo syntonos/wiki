@@ -8,9 +8,19 @@ import 'katex/dist/katex.min.css'
 import Quiz, { QuizCtx } from './Quiz.jsx'
 import Mermaid from './Mermaid.jsx'
 import MathSpan from './MathSpan.jsx'
+import Pdf from './Pdf.jsx'
 import { names, notes, title, preprocess, resolveAsset } from '../lib/vault.js'
 
 const isVideo = (u) => /\.(mp4|webm|ogv|mov|m4v)(\?|#|$)/i.test(u)
+const fileName = (s) => { try { s = decodeURI(s) } catch {} return s.split(/[?#]/)[0].split('/').pop() }
+const isPdfUrl = (s) => /\.pdf([?#]|$)/i.test(s)
+
+// <img> that says so when the file is missing, instead of a silent broken icon
+function Img({ src, alt, style }) {
+  const [bad, setBad] = useState(false)
+  return bad ? <span className="dead">missing image: {alt || fileName(src)}</span> : <img src={src} alt={alt} style={style} onError={() => setBad(true)} />
+}
+
 const text = (n) => n.value ?? (n.children || []).map(text).join('')
 
 function CodeBlock({ node, children }) {
@@ -40,6 +50,7 @@ export default function Note({ id, text: src }) {
   const components = useMemo(() => ({
     a: ({ href = '', className, children }) =>
       href === '#missing' ? <span className="dead">{children}</span>
+      : !href.startsWith('#') && isPdfUrl(href) ? <><a className="pdf-link" href={resolveAsset(href, id || '')} target="_blank" rel="noreferrer">{children}</a><a className="pdf-dl" href={resolveAsset(href, id || '')} download={fileName(href)} title="Download PDF">⬇</a></>
       : href.startsWith('#/tag/') ? <a className="tag" href={href}>{children}</a>
       : href.startsWith('#/') ? <a className={className || 'wl'} href={href}>{children}</a>
       : <a href={href} target="_blank" rel="noreferrer">{children}</a>,
@@ -49,8 +60,9 @@ export default function Note({ id, text: src }) {
       const style = w ? { width: +w } : undefined
       const yt = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/)
       if (yt) return <iframe src={`https://www.youtube.com/embed/${yt[1]}`} allowFullScreen />
+      if (isPdfUrl(u)) return <Pdf src={u} name={fileName(src)} height={w ? +w : undefined} />
       if (isVideo(u)) return <video controls src={u} style={style} />
-      return <img src={u} alt={alt.replace(/\|\d+$/, '')} style={style} />
+      return <Img src={u} alt={alt.replace(/\|\d+$/, '')} style={style} />
     },
     pre: CodeBlock,
     'math-tex': ({ node }) => <MathSpan tex={node.properties.dataT ?? ''} display={String(node.properties.dataD) === '1'} />,

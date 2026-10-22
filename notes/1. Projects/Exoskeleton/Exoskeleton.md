@@ -1,3 +1,8 @@
+---
+order: 1
+pin: true
+---
+
 # Exoskeleton
 A lower body exoskeleton. Made with Sophie Di and Alex Elia. 
 

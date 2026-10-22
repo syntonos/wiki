@@ -1,3 +1,7 @@
+---
+order: 1
+---
+
 # Signals & Systems
 ## Monograph
 All this is fairly irrelevant if you prefer a non-interactive version of notes, as the lovely Prof. Delchamps has already essentially written a full open-source textbook for ECE 3250 (Cornell's Signals & Systems.) This version does also integrate practice problems and coding demos, some of which do come from the ECE 3250 course materials.

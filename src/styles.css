@@ -143,3 +143,20 @@ main{position:relative;display:flex;flex-direction:column;min-width:0;min-height
 
 .math-block{display:block;margin:1em 0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}.math-block::-webkit-scrollbar{display:none}
 .math-block .katex-display{margin:0}
+
+/* ---- pdf viewer + pdf links ---- */
+.pdf{display:block;margin:18px 0;border:1px solid var(--line);clip-path:var(--cut);background:var(--panel2)}
+.pdf-bar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:6px 10px;border-bottom:1px solid var(--line)}
+.pdf-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:Orbitron,sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--cy)}
+.pdf-bar a,.pdf-bar button{background:none;color:#fff;border:1px solid var(--line);padding:2px 10px;font-family:Orbitron,sans-serif;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.pdf-bar a:hover,.pdf-bar button:hover{color:var(--cy);border-color:var(--cy)}
+.note .pdf iframe{display:block;width:100%;aspect-ratio:auto;margin:0;border:0;clip-path:none;background:#2a2a35}
+.note a.pdf-link{text-decoration:none;border-bottom:1px dashed var(--acc);color:var(--acc)}
+.note a.pdf-dl{margin-left:6px;padding:0 6px;border:1px solid var(--line);text-decoration:none;font-size:.8em;color:var(--cy)}
+/* ---- pinned ---- */
+.pinsec{padding:2px 0 10px;margin-bottom:8px;border-bottom:1px solid var(--line)}
+.pinhd{font-family:Orbitron,sans-serif;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cy);padding:4px 8px}
+.pinrow{display:flex;align-items:center}.pinrow a{flex:1;min-width:0}
+.unpin{background:none;border:0;color:var(--dim);font-size:1.1rem;cursor:pointer;padding:0 8px}.unpin:hover{color:var(--bad)}
+.pinbtn{width:100%;margin-bottom:6px;background:none;color:#fff;border:1px solid var(--line);padding:6px 10px;font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;clip-path:var(--cut6)}
+.pinbtn:hover:not(:disabled),.pinbtn.on{color:var(--cy);border-color:var(--cy)}.pinbtn:disabled{cursor:default;opacity:.8}

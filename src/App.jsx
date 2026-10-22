@@ -3,12 +3,12 @@ import Sidebar from './components/Sidebar.jsx'
 import Note from './components/Note.jsx'
 import Graph from './components/Graph.jsx'
 import Switcher from './components/Switcher.jsx'
-import { init, names, out, backlinks, resolveNote, title, home, indexMd, allTags, tagIndex } from './lib/vault.js'
+import { init, pinned as filePinned, names, out, backlinks, resolveNote, title, home, indexMd, allTags, tagIndex } from './lib/vault.js'
 
 const OWNER_NAME = 'MINA YEH'          // <- placeholder: put a name here
 const SITE_URL = 'https://minayeh.com'  // <- where the star + name link to
-const GITHUB_URL = 'https://github.com/'          // <- your GitHub
-const INSTAGRAM_URL = 'https://instagram.com/'     // <- your Instagram
+const GITHUB_URL = 'https://github.com/syntonos/'          // <- your GitHub
+const INSTAGRAM_URL = 'https://instagram.com/'
 const SNAP = 130, MIN = 200, MAX = 520  // drag a panel below SNAP px and it snaps closed
 // Show the bundled notes/Demo folder (usage instructions + feature demos)? false = hide it everywhere
 // (sidebar, graph, search, tags, index). Code-only switch.
@@ -53,6 +53,8 @@ export default function App() {
   const [rw, setRw] = useState(isMob() ? 0 : ui.rw ?? 300)
   const [drag, setDrag] = useState(false)
   const [toc, setToc] = useState([])
+  const [pins, setPins] = useState(() => { try { return JSON.parse(localStorage.getItem('vault.pins') || '[]') } catch { return [] } })
+  useEffect(() => { try { localStorage.setItem('vault.pins', JSON.stringify(pins)) } catch {} }, [pins])
   const last = useRef({ l: ui.l || 280, r: ui.r || 300 })
   const wasMob = useRef(isMob())
 
@@ -115,6 +117,11 @@ export default function App() {
   const go = (p) => { location.hash = '#/' + encodeURI(p); setView('note') }
   const Link = ({ p }) => <a href={'#/' + encodeURI(p)}>{title(p)}</a>
   const minL = Math.min(...toc.map((t) => t.l))
+  // pinned: from notes' frontmatter (pin: true) + this browser's own pins (right panel button)
+  const pinList = [...filePinned.map((p) => ({ p, local: false })), ...pins.filter((p) => names.includes(p) && !filePinned.includes(p)).map((p) => ({ p, local: true }))]
+  const togglePin = (p) => setPins((x) => (x.includes(p) ? x.filter((y) => y !== p) : [...x, p]))
+  const isFilePin = id && filePinned.includes(id)
+  const isPin = id && (isFilePin || pins.includes(id))
   const homeText = home + '\n\n' + indexMd()
   const tagText = tag ? `# Tag: ${tag}\n\n` + (tagIndex[tag] || []).map((p) => `- [[${p}]]`).join('\n') + `\n\n[View in graph](#/graph/${encodeURI(tag)})` : ''
   const heading = id ? title(id) : tag ? '#' + tag : view === 'graph' ? 'Graph' : 'Home'
@@ -133,7 +140,7 @@ export default function App() {
         <button className="ic" title={rw ? 'Close panel' : 'Open panel'} onClick={() => toggle('r')}>{rw ? <Cross /> : <PanelIcon />}</button>
       </header>
       <div className="body">
-        <Sidebar current={id} q={q} setQ={setQ} go={go} />
+        <Sidebar current={id} q={q} setQ={setQ} go={go} pinned={pinList} onUnpin={togglePin} />
         <main>
           <div className="grip l" onPointerDown={startDrag('l')} />
           <div className="grip r" onPointerDown={startDrag('r')} />
@@ -153,6 +160,9 @@ export default function App() {
         </main>
         <aside className="right"><div className="in">
           {id && <>
+            <button className={'pinbtn' + (isPin ? ' on' : '')} disabled={isFilePin} onClick={() => togglePin(id)}>
+              {isFilePin ? '★ Pinned (in note file)' : isPin ? '★ Unpin from sidebar' : '☆ Pin to sidebar'}
+            </button>
             <h4>Local graph</h4>
             <div className="mini"><Graph current={id} onOpen={go} local /></div>
             <h4>Backlinks</h4>

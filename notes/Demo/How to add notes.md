@@ -1,3 +1,6 @@
+---
+order: 2
+---
 # How to add notes
 
 1. **New note**: create a `.md` file anywhere inside `notes/`. The dev server picks it up instantly.
@@ -79,5 +82,30 @@ Math (`$...$`) works in questions, options and explanations. After you press Che
 - Graph: scroll or pinch to zoom, drag the background to pan, drag nodes. Colours follow top-level folders.
 - Prev/next links at the bottom of each note follow the sidebar order.
 - Unresolved `[[links]]` are listed at the bottom of the homepage.
+
+## Ordering notes and folders
+Notes are sorted by name by default (numbers sort naturally, so `2 Intro` comes before `10 Outro`). To choose the order, add frontmatter at the very top of a note:
+~~~
+---
+order: 2
+---
+~~~
+Lower numbers come first; notes without `order` follow, alphabetically. Folders are ordered the same way with a `_folder.md` file inside the folder (it is not a note):
+~~~
+---
+order: 1
+title: Biology 101
+---
+~~~
+Folders always list before the notes at the same level. The same order is used by the sidebar, the homepage index and the prev/next links at the bottom of notes.
+
+## Pinning
+- `pin: true` in a note's frontmatter lists it in a **Pinned** section at the top of the sidebar and the homepage.
+- `pin: true` in a folder's `_folder.md` floats that folder to the top of its level.
+- Visitors can also pin notes for themselves with the **Pin to sidebar** button in the right panel. Those pins are stored in their own browser and shown with a × to unpin.
+- Optional `title: My Title` in a note's frontmatter overrides the title shown in the sidebar and graph.
+
+## Images, video and PDFs
+Put the files anywhere inside `notes/` and reference them by name: see [[Images and Files]]. Upper-case extensions (`.JPG`) work. HEIC photos are not supported by browsers: convert them to JPG first.
 
 See also [[Customize and Deploy]].
