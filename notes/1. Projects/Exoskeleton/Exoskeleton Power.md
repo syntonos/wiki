@@ -11,7 +11,7 @@ This has to power a few parts, each with different current draw and different vo
     - Rated Load Phase Current: 7 Apk
     - Peak Phase Current: 23 Apk
 
-![Robstride 01 Specs](/wiki/images/projects/Exoskeleton/robstride01.png)
+![Robstride 01 Specs](/public/images/projects/Exoskeleton/robstride01.png)
 
 ### Battery
 We will be using a battery pack of 21700 cells, with integrated BMS and USB-C PD charging. Outputs use XT30 to the PDB.
