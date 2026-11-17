@@ -29,7 +29,26 @@ This is not always true! Take $x_1 = cos(t/2) + cos(t/3)$ and $x_2 = cos(t/3)$. 
 
 ## Fourier Series
 
+### 9.4 Fact: Fourier Series Existence
+Let $x^2 \in \mathbb{C}^\mathbb{R}$ be a decent periodic signal taht has $T_0$ as a period and is piecewise differentiable on all intervals between its jumps. Let $\Omega_0 = \frac{2\pi}{T_0}$. Then there exist complex constants $c_k, k \in \mathbb{Z}$, such that the sequence
+$$S_N(t) = \sum_{k=-N}^{N}c_ke^{jk\Omega_0t}$$
+converges as $N \rightarrow \infty$ for every $t \in \mathbb{R}$ as follows: 
 
+- if $t$ is a continuity point of $x$, then $lim_{N \rightarrow \infty} S_N(t) = x(t)$, and 
+- if $t$ is a jump point, then $S_N(t)$ converges as $N \rightarrow \infty$ to the mean value of the jump. 
+
+In shorthand, non-rigoriously, 
+$$x(t) = \sum_{k=-\infty}^{\infty}c_ke^{jk\Omega_0t}$$
+This is absolutely true for $x$ is continuous and piecewise differentiable. 
+
+## 9.5 Fact: $\int_{0}^{T_0} e^{jm\Omega_0t}dt=\begin{cases} T_0 & m=0 \\ 0 & m \neq 0 \end{cases}$
+
+We can then use this fact to calculate Fourier coefficients.
+
+$$c_0 = \frac{1}{T_0}\int_{0}^{T_0}x(t)dt$$
+$$c_k = \frac{1}{T_0}\int_{0}^{T_0}x(t)e^{-jk\Omega_0t}dt$$
+
+You can actually perform these integrals over any interval of length $T_0$
 ## Inner-product spaces and Hilbert Spaces
 
 ## Orthogonal Expansions
