@@ -41,7 +41,7 @@ In shorthand, non-rigoriously,
 $$x(t) = \sum_{k=-\infty}^{\infty}c_ke^{jk\Omega_0t}$$
 This is absolutely true for $x$ is continuous and piecewise differentiable. 
 
-## 9.5 Fact: $\int_{0}^{T_0} e^{jm\Omega_0t}dt=\begin{cases} T_0 & m=0 \\ 0 & m \neq 0 \end{cases}$
+### 9.5 Fact: $\int_{0}^{T_0} e^{jm\Omega_0t}dt=\begin{cases} T_0 & m=0 \\ 0 & m \neq 0 \end{cases}$
 
 We can then use this fact to calculate Fourier coefficients.
 
