@@ -30,12 +30,11 @@ Takes USB-C input from the Jetson t5000 and converts to three FDCAN buses.
 flowchart TD
     A[INPUT - USB-C] --data--> B{MCU STM32G4}
     A --power--> C{3V3 LDO}
-    B --UART 1--> D[CAN Transceiver TCAN332G]
-    B --UART 2--> E[CAN Transceiver TCAN332G]
-    B --UART 3--> F[CAN Transceiver TCAN332G]
-    D --CAN FD BUS 1--> G[OUTPUT - 2x JST-PH 2.54mm]
-    E --CAN FD BUS 2--> H[OUTPUT - 2x JST-PH 2.54mm]
-    F --CAN FD BUS 3--> I[OUTPUT - 2x JST-PH 2.54mm]
+    C --power--> B 
+    C --power--> D
+    B --UART--> D[CAN Transceiver]
+    D --CAN FD--> E[OUTPUT - 6x JST-PH 2.54mm]
+
 ```
 3V3 LDO supplies power to all components. 
 ### Structural Block Diagram
