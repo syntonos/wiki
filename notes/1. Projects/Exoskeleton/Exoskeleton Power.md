@@ -36,5 +36,7 @@ Outputs:
 - 2x XT30 for the motors (left and right)
 - 2x JST-PH 2.54mm for Main PCB & CAN Driver Board
 
+[[Exoskeleton PDB]]
+
 
 

@@ -18,7 +18,7 @@ Electrical has three main problems to solve:
 [[Exoskeleton Main PCB]]
 
 ### Actuators
-[[Exoskeleton CAN Board]]
+- Actuator control is intergrated onto the main PCB. [[Exoskeleton Main PCB]]
 
 ### Power
 [[Exoskeleton Power]]
