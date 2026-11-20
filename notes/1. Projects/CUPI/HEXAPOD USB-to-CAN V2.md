@@ -27,7 +27,7 @@ Takes USB-C input from the Jetson t5000 and converts to three FDCAN buses.
 ### Functional Block Diagram
 
 ```mermaid
-flowchart TD
+flowchart LR
     A[INPUT - USB-C] --data--> B{MCU STM32G4}
     A --power--> C{3V3 LDO}
     C --power--> B 

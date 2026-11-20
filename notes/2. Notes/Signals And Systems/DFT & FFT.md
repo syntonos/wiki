@@ -11,11 +11,11 @@ Given continuous-time LTI system w/impulse response $h$ and frequency response $
 Overall, we need to pick $T>0$ and a discrete-time system with impulse response $h$ and frquency response $\hat{H}$ such that 
 
 ```mermaid
-flowchart TD
-    A[Xc] --> B[T-sampler]
-    B -- x --> C[H W]
-    C -- y --> D[sinc funct interpolation]
-    D --> E[Yc]
+flowchart LR
+    A[$$X_c$$] --> B[T-sampler]
+    B -- x --> C["$$\hat{H}(\Omega)$$"]
+    C -- y --> D["sinc funct interpolation"]
+    D --> E[$$Y_c$$]
 ```
 
 Which appoximately implements 
@@ -24,4 +24,4 @@ $$X_c \rightarrow \boxed{\hat{H}(\Omega)} \rightarrow Y_c$$
 
 Assume all relevant $X_c$s are bandlimited, bandwidth $\leq \Omega_m^*$, and $\frac{2\pi}{T} > 2\Omega_m^*$, (pick a small enough positive T that this holds). 
 
-Suppose $X_c \xrightleftarrow{\mathcal{F}} \hat{X}_c$. By equation D, we have 
+Suppose $X_c \xleftrightarrow{\mathcal{F}} \hat{X}_c$. By equation D, we have 
